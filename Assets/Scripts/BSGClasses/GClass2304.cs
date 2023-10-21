@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers;
 using TarkovServerU19.BSGEnums;
 
 namespace TarkovServerU19.BSGClasses
@@ -41,11 +42,5 @@ namespace TarkovServerU19.BSGClasses
             GClass2304.arrayPool_0.Return(messageSegment.Buffer.Array, false);
             GClass2304.gclass1006_0.Return(messageSegment);
         }
-
-        // Token: 0x0400A9AD RID: 43437
-        private static readonly GClass1006<MessageSegment> gclass1006_0 = new GClass1006<MessageSegment>(new Func<MessageSegment>(GClass2304.Create), 1024);
-
-        // Token: 0x0400A9AE RID: 43438
-        private static readonly ArrayPool<byte> arrayPool_0 = ArrayPool<byte>.Shared;
     }
 }

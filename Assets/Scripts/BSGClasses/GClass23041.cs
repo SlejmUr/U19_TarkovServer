@@ -4,11 +4,11 @@ using TarkovServerU19.BSGEnums;
 using TarkovServerU19.Helpers;
 namespace TarkovServerU19.BSGClasses
 {
-    internal class GClass2304
+    public class GClass2304
     {
-        private static readonly GClass1006<MessageSegment> gclass1006_0 = new GClass1006<MessageSegment>(Create, 1024);
+        public static readonly GClass1006<MessageSegment> gclass1006_0 = new GClass1006<MessageSegment>(Create, 1024);
 
-        private static readonly ArrayPool<byte> arrayPool_0 = ArrayPool<byte>.Shared;
+        public static readonly ArrayPool<byte> arrayPool_0 = ArrayPool<byte>.Shared;
 
         public static MessageSegment Create()
         {

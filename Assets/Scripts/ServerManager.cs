@@ -37,6 +37,8 @@ namespace TarkovServerU19
                 server = new TarkovNetworkServer();
                 server.Configure(hostTopology);
                 server.Initialize();
+				//NetworkManager.activeTransport = new Networking.NetworkTransportShit();
+                NetworkManager.activeTransport.Init();
                 var isListen = server.Listen(ServerIP, ServerPort);
                 Console.WriteLine(isListen);
                 Debug.Log("Server Started");

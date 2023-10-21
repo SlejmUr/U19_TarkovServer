@@ -82,6 +82,7 @@
     <Compile Include="Assets\Scripts\BSGClasses\GClass2304.cs" />
     <Compile Include="Assets\Scripts\BSGClasses\GClass23041.cs" />
     <Compile Include="Assets\Scripts\BSGClasses\GClass2305.cs" />
+    <Compile Include="Assets\Scripts\BSGClasses\GClass2310.cs" />
     <Compile Include="Assets\Scripts\BSGClasses\GStruct335.cs" />
     <Compile Include="Assets\Scripts\BSGClasses\GameTimeClass.cs" />
     <Compile Include="Assets\Scripts\BSGClasses\GitVersion.cs" />

@@ -4,7 +4,7 @@ using System;
 
 namespace TarkovServerU19.BSGClasses
 {
-    internal class GClass1006<T>
+    public class GClass1006<T>
     {
         private readonly Stack<T> stack_0 = new Stack<T>();
 
