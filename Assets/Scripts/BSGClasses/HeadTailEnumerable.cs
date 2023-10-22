@@ -6,15 +6,15 @@ using System.Threading;
 
 namespace TarkovServerU19.BSGClasses
 {
-    public class GClass2300<T> : IEnumerable, ICollection, IEnumerable<T>, IReadOnlyCollection<T>, IProducerConsumerCollection<T>
+    public class HeadTailEnumerable<T> : IEnumerable, ICollection, IEnumerable<T>, IReadOnlyCollection<T>, IProducerConsumerCollection<T>
     {
         public class Head
         {
-            internal volatile T[] gparam_0;
+            internal volatile T[] tparam;
 
             internal volatile Struct709[] struct709_0;
 
-            private volatile Head gclass2301_0;
+            private volatile Head prot_Head;
 
             public long m_index;
 
@@ -22,9 +22,9 @@ namespace TarkovServerU19.BSGClasses
 
             private volatile int int_1;
 
-            private volatile GClass2300<T> gclass2300_0;
+            private volatile HeadTailEnumerable<T> headTailEnumerable;
 
-            internal Head GClass2301_0 => gclass2301_0;
+            internal Head head => prot_Head;
 
             internal bool Boolean_0 => Int32_0 > Int32_1;
 
@@ -32,50 +32,50 @@ namespace TarkovServerU19.BSGClasses
 
             internal int Int32_1 => Math.Min(int_1, 31);
 
-            internal Head(long index, GClass2300<T> source)
+            internal Head(long index, HeadTailEnumerable<T> source)
             {
-                gparam_0 = new T[32];
+                tparam = new T[32];
                 struct709_0 = new Struct709[32];
                 int_1 = -1;
                 m_index = index;
-                gclass2300_0 = source;
+                headTailEnumerable = source;
             }
 
-            public void Setup(long index, GClass2300<T> source)
+            public void Setup(long index, HeadTailEnumerable<T> source)
             {
                 for (int i = 0; i < 32; i++)
                 {
-                    gparam_0[i] = default(T);
+                    tparam[i] = default(T);
                     struct709_0[i].m_value = false;
                 }
-                gclass2301_0 = null;
+                prot_Head = null;
                 m_index = 0L;
                 int_0 = 0;
                 int_1 = -1;
-                gclass2300_0 = source;
+                headTailEnumerable = source;
             }
 
             internal void method_0(T value)
             {
                 int_1++;
-                gparam_0[int_1] = value;
+                tparam[int_1] = value;
                 struct709_0[int_1].m_value = true;
             }
 
             internal Head method_1()
             {
-                Head head = gclass2300_0.class1914_0.Get();
-                head.Setup(m_index + 1L, gclass2300_0);
-                gclass2301_0 = head;
+                Head head = headTailEnumerable.class1914_0.Get();
+                head.Setup(m_index + 1L, headTailEnumerable);
+                prot_Head = head;
                 return head;
             }
 
             internal void method_2()
             {
-                Head head = gclass2300_0.class1914_0.Get();
-                head.Setup(m_index + 1L, gclass2300_0);
-                gclass2301_0 = head;
-                gclass2300_0.m_tail = gclass2301_0;
+                Head head = headTailEnumerable.class1914_0.Get();
+                head.Setup(m_index + 1L, headTailEnumerable);
+                prot_Head = head;
+                headTailEnumerable.m_tail = prot_Head;
             }
 
             internal bool method_3(T value)
@@ -93,7 +93,7 @@ namespace TarkovServerU19.BSGClasses
                     num = Interlocked.Increment(ref int_1);
                     if (num <= 31)
                     {
-                        gparam_0[num] = value;
+                        tparam[num] = value;
                         struct709_0[num].m_value = true;
                     }
                     if (num == 31)
@@ -130,20 +130,20 @@ namespace TarkovServerU19.BSGClasses
                 {
                     spinWait2.SpinOnce();
                 }
-                result = gparam_0[int32_];
-                if (gclass2300_0.int_1 <= 0)
+                result = tparam[int32_];
+                if (headTailEnumerable.int_1 <= 0)
                 {
-                    gparam_0[int32_] = default(T);
+                    tparam[int32_] = default(T);
                 }
                 if (int32_ + 1 >= 32)
                 {
                     SpinWait spinWait3 = default(SpinWait);
-                    while (gclass2301_0 == null)
+                    while (prot_Head == null)
                     {
                         spinWait3.SpinOnce();
                     }
-                    gclass2300_0.class1914_0.Return(gclass2300_0.m_head);
-                    gclass2300_0.m_head = gclass2301_0;
+                    headTailEnumerable.class1914_0.Return(headTailEnumerable.m_head);
+                    headTailEnumerable.m_head = prot_Head;
                 }
                 return true;
             }
@@ -161,7 +161,7 @@ namespace TarkovServerU19.BSGClasses
                 {
                     spinWait.SpinOnce();
                 }
-                result = gparam_0[int32_];
+                result = tparam[int32_];
                 return true;
             }
 
@@ -174,7 +174,7 @@ namespace TarkovServerU19.BSGClasses
                     {
                         spinWait.SpinOnce();
                     }
-                    list.Add(gparam_0[i]);
+                    list.Add(tparam[i]);
                 }
             }
         }
@@ -191,48 +191,28 @@ namespace TarkovServerU19.BSGClasses
 
         internal class Class1914<U>
         {
-            private readonly ConcurrentBag<U> concurrentBag_0;
+            private readonly ConcurrentBag<U> concurrentBag;
 
-            private readonly Func<U> func_0;
+            private readonly Func<U> func;
 
             public Class1914(Func<U> objectGenerator)
             {
-                func_0 = objectGenerator ?? throw new ArgumentNullException("objectGenerator");
-                concurrentBag_0 = new ConcurrentBag<U>();
+                func = objectGenerator ?? throw new ArgumentNullException("objectGenerator");
+                concurrentBag = new ConcurrentBag<U>();
             }
 
             public U Get()
             {
-                if (!concurrentBag_0.TryTake(out var result))
+                if (!concurrentBag.TryTake(out var result))
                 {
-                    return func_0();
+                    return func();
                 }
                 return result;
             }
 
             public void Return(U item)
             {
-                concurrentBag_0.Add(item);
-            }
-        }
-
-        [Serializable]
-        private sealed class Class1915
-        {
-            public static readonly Class1915 class1915_0 = new Class1915();
-
-            public static Func<Head> func_0;
-
-            public static Func<Head> func_1;
-
-            internal Head method_0()
-            {
-                return new Head(0L, null);
-            }
-
-            internal Head method_1()
-            {
-                return new Head(0L, null);
+                concurrentBag.Add(item);
             }
         }
 
@@ -270,7 +250,7 @@ namespace TarkovServerU19.BSGClasses
                 {
                     return false;
                 }
-                if (head.GClass2301_0 == null)
+                if (head.head == null)
                 {
                     return true;
                 }
@@ -279,7 +259,7 @@ namespace TarkovServerU19.BSGClasses
                 {
                     if (head.Boolean_0)
                     {
-                        if (head.GClass2301_0 == null)
+                        if (head.head == null)
                         {
                             break;
                         }
@@ -297,7 +277,7 @@ namespace TarkovServerU19.BSGClasses
         {
             get
             {
-                method_4(out var head, out var tail, out var headLow, out var tailHigh);
+                Spliiter(out var head, out var tail, out var headLow, out var tailHigh);
                 if (head != tail)
                 {
                     return 32 - headLow + 32 * (int)(tail.m_index - head.m_index - 1L) + (tailHigh + 1);
@@ -306,7 +286,7 @@ namespace TarkovServerU19.BSGClasses
             }
         }
 
-        public GClass2300()
+        public HeadTailEnumerable()
         {
             Head head = class1914_0.Get();
             head.Setup(0L, this);
@@ -332,7 +312,7 @@ namespace TarkovServerU19.BSGClasses
             m_tail = head;
         }
 
-        public GClass2300(IEnumerable<T> collection)
+        public HeadTailEnumerable(IEnumerable<T> collection)
         {
             if (collection == null)
             {
@@ -347,7 +327,7 @@ namespace TarkovServerU19.BSGClasses
             {
                 throw new ArgumentNullException("array");
             }
-            ((ICollection)method_3()).CopyTo(array, index);
+            ((ICollection)MakeAList()).CopyTo(array, index);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -368,23 +348,23 @@ namespace TarkovServerU19.BSGClasses
 
         public T[] ToArray()
         {
-            return method_3().ToArray();
+            return MakeAList().ToArray();
         }
 
-        private List<T> method_3()
+        private List<T> MakeAList()
         {
             Interlocked.Increment(ref int_1);
             List<T> list = new List<T>();
             try
             {
-                method_4(out var head, out var tail, out var headLow, out var tailHigh);
+                Spliiter(out var head, out var tail, out var headLow, out var tailHigh);
                 if (head == tail)
                 {
                     head.method_6(list, headLow, tailHigh);
                     return list;
                 }
                 head.method_6(list, headLow, 31);
-                for (Head gClass2301_ = head.GClass2301_0; gClass2301_ != tail; gClass2301_ = gClass2301_.GClass2301_0)
+                for (Head gClass2301_ = head.head; gClass2301_ != tail; gClass2301_ = gClass2301_.head)
                 {
                     gClass2301_.method_6(list, 0, 31);
                 }
@@ -397,7 +377,7 @@ namespace TarkovServerU19.BSGClasses
             }
         }
 
-        private void method_4(out Head head, out Head tail, out int headLow, out int tailHigh)
+        private void Spliiter(out Head head, out Head tail, out int headLow, out int tailHigh)
         {
             head = m_head;
             tail = m_tail;
@@ -420,17 +400,17 @@ namespace TarkovServerU19.BSGClasses
             {
                 throw new ArgumentNullException("array");
             }
-            method_3().CopyTo(array, index);
+            MakeAList().CopyTo(array, index);
         }
 
         public IEnumerator<T> GetEnumerator()
         {
             Interlocked.Increment(ref int_1);
-            method_4(out var head, out var tail, out var headLow, out var tailHigh);
-            return method_5(head, tail, headLow, tailHigh);
+            Spliiter(out var head, out var tail, out var headLow, out var tailHigh);
+            return Enumerator(head, tail, headLow, tailHigh);
         }
 
-        private IEnumerator<T> method_5(Head head, Head tail, int headLow, int tailHigh)
+        private IEnumerator<T> Enumerator(Head head, Head tail, int headLow, int tailHigh)
         {
             try
             {
@@ -446,7 +426,7 @@ namespace TarkovServerU19.BSGClasses
                         {
                             spinWait.SpinOnce();
                         }
-                        yield return head.gparam_0[num];
+                        yield return head.tparam[num];
                         int num2 = num + 1;
                         num = num2;
                     }
@@ -460,11 +440,11 @@ namespace TarkovServerU19.BSGClasses
                     {
                         spinWait.SpinOnce();
                     }
-                    yield return head.gparam_0[num];
+                    yield return head.tparam[num];
                     int num2 = num + 1;
                     num = num2;
                 }
-                for (Head gClass2301_ = head.GClass2301_0; gClass2301_ != tail; gClass2301_ = gClass2301_.GClass2301_0)
+                for (Head gClass2301_ = head.head; gClass2301_ != tail; gClass2301_ = gClass2301_.head)
                 {
                     num = 0;
                     while (num < 32)
@@ -474,7 +454,7 @@ namespace TarkovServerU19.BSGClasses
                         {
                             spinWait.SpinOnce();
                         }
-                        yield return gClass2301_.gparam_0[num];
+                        yield return gClass2301_.tparam[num];
                         int num2 = num + 1;
                         num = num2;
                     }
@@ -487,7 +467,7 @@ namespace TarkovServerU19.BSGClasses
                     {
                         spinWait.SpinOnce();
                     }
-                    yield return tail.gparam_0[num];
+                    yield return tail.tparam[num];
                     int num2 = num + 1;
                     num = num2;
                 }

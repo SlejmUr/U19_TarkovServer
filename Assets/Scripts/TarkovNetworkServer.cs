@@ -6,6 +6,13 @@ namespace TarkovServerU19
 {
     public class TarkovNetworkServer : NetworkServerSimple
     {
+
+        public override void OnError(int connectionId, byte error)
+        {
+            Debug.Log("OnError: " + connectionId +  " " + error);
+            base.OnError(connectionId, error);
+        }
+
         public override void OnConnected(NetworkConnection conn)
         {
             conn.logNetworkMessages = true;

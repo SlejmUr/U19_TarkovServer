@@ -491,9 +491,9 @@ namespace TarkovServerU19.BSGClasses
         }
 
         // Token: 0x0600BD82 RID: 48514 RVA: 0x00333EE0 File Offset: 0x003320E0
-        public GStruct335 GetStatistics()
+        public UDPStats GetStatistics()
         {
-            return new GStruct335
+            return new UDPStats
             {
                 Rtt = this.gclass2305_0.rtt.averageValue,
                 Lose = this.gclass2305_0.lose.averageLosePercentValue,

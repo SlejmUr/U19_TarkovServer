@@ -1,4 +1,5 @@
 ﻿using System;
+using TarkovServerU19.Networking;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -8,12 +9,14 @@ namespace TarkovServerU19
     {
         public TarkovNetworkServer server;
 
-		[SerializeField]
+		public TarkovNetworkManager managerserver;
+
+        [SerializeField]
 		public string ServerIP;
 
         [SerializeField]
         public int ServerPort;
-
+ 
 
 		public void SetServerIP(string IP)
 		{
@@ -31,21 +34,42 @@ namespace TarkovServerU19
             try
             {
                 Debug.developerConsoleVisible = true;
-                LogFilter.current = LogFilter.FilterLevel.Developer;
+                NetworkManager.activeTransport = new TarkovTransportTest();
                 var tarkovConfig = ServerHelper.GetConnectionConfig();
                 HostTopology hostTopology = new HostTopology(tarkovConfig, 100);
+                LogFilter.current = LogFilter.FilterLevel.SetInScripting;
+                managerserver.logLevel = LogFilter.FilterLevel.SetInScripting;
+
+				managerserver.maxConnections = 100;
+				managerserver.name = "fucktarkov";
+				managerserver.serverBindAddress = ServerIP;
+				managerserver.serverBindToIP = true;
+                managerserver.networkPort = ServerPort;
+				managerserver.StartServer(tarkovConfig, 100);
+
+                NetworkManager.activeTransport.Init();
+
+
+
+
+
+
+
+                /*
                 server = new TarkovNetworkServer();
                 server.Configure(hostTopology);
                 server.Initialize();
-				//NetworkManager.activeTransport = new Networking.NetworkTransportShit();
-                NetworkManager.activeTransport.Init();
-                var isListen = server.Listen(ServerIP, ServerPort);
-                Console.WriteLine(isListen);
+
+                //NetworkManager.activeTransport.Init();
+                var isListen = server.Listen(ServerIP, ServerPort);*/
+                //Console.WriteLine(isListen);
                 Debug.Log("Server Started");
+				/*
                 server.RegisterHandler(32, Loaded); //OnConnect
                 server.RegisterHandler(33, Loaded); //OnDisconnect
                 server.RegisterHandler(35, Loaded); //MsgType.Ready
                 server.RegisterHandler(36, Loaded); //MsgType.NotReady
+				*/
                 server.RegisterHandler(147, Loaded); //Sending Request to join + OnAcceptResponse
                 server.RegisterHandler(148, Loaded); //OnRejectResponse (Contains Error in Int32)
                 server.RegisterHandler(168, Loaded); //battlEye packets
@@ -167,13 +191,13 @@ namespace TarkovServerU19
 			int_45 = 361141025;
 			NetworkBehaviour.RegisterRpcDelegate(typeof(AbstractGameSession), int_45, new NetworkBehaviour.CmdDelegate(InvokeRpcRpcSyncLighthouseTraderZoneData));
                  */
-                NetworkCRC.RegisterBehaviour("AbstractGameSession", 0);
+                //NetworkCRC.RegisterBehaviour("AbstractGameSession", 0);
                 /*
 				NetworkBehaviour.RegisterCommandDelegate(typeof(HlapiPlayer), HlapiPlayer.int_0, new NetworkBehaviour.CmdDelegate(HlapiPlayer.InvokeCmdCmdSetPlayerName));
 				HlapiPlayer.int_1 = 1332331777;
 				NetworkBehaviour.RegisterRpcDelegate(typeof(HlapiPlayer), HlapiPlayer.int_1, new NetworkBehaviour.CmdDelegate(HlapiPlayer.InvokeRpcRpcSetPlayerName));
 				*/
-				NetworkCRC.RegisterBehaviour("HlapiPlayer", 0);
+				//NetworkCRC.RegisterBehaviour("HlapiPlayer", 0);
                 Debug.Log("RegisterCommandDelegate's done");
             }
             catch (Exception ex)
@@ -198,7 +222,8 @@ namespace TarkovServerU19
                 if (server.serverHostId != -1)
                 {
                     //Debug.Log("Timer");
-                    server.Update();
+                    server.UpdateConnections();
+					server.Update();
                 }
             }
         }

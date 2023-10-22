@@ -1,33 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TarkovServerU19.BSGClasses;
 using TarkovServerU19.BSGEnums;
 using TarkovServerU19.Helpers;
 using UnityEngine.Networking.Types;
 using UnityEngine.Networking;
+using UnityEngine;
 
 namespace TarkovServerU19.BSGClasses
 {
-    internal class GClass2310
+    internal class TransportManager
     {
-        private class Class1917
+        private class QosManager
         {
-            private List<QosType> list_0 = new List<QosType>();
+            private List<QosType> QosTypes = new List<QosType>();
 
-            private Dictionary<QosType, int> dictionary_0 = new Dictionary<QosType, int>();
+            private Dictionary<QosType, int> QosDict = new Dictionary<QosType, int>();
 
-            public Class1917(HostTopology topology)
+            public QosManager(HostTopology topology)
             {
                 for (int i = 0; i < topology.DefaultConfig.Channels.Count; i++)
                 {
                     QosType qOS = topology.DefaultConfig.Channels[i].QOS;
-                    list_0.Add(qOS);
-                    if (dictionary_0.ContainsKey(qOS))
+                    QosTypes.Add(qOS);
+                    if (QosDict.ContainsKey(qOS))
                     {
-                        dictionary_0.Add(qOS, i);
+                        QosDict.Add(qOS, i);
                     }
                 }
             }
@@ -57,12 +55,12 @@ namespace TarkovServerU19.BSGClasses
 
             public NetworkChannel ConvertIdentifier(int outsideChannel)
             {
-                return Convert(list_0[outsideChannel]);
+                return Convert(QosTypes[outsideChannel]);
             }
 
             public int ConvertIdentifier(NetworkChannel insideNetworkChannel)
             {
-                if (dictionary_0.TryGetValue(Convert(insideNetworkChannel), out var value))
+                if (QosDict.TryGetValue(Convert(insideNetworkChannel), out var value))
                 {
                     return value;
                 }
@@ -70,7 +68,7 @@ namespace TarkovServerU19.BSGClasses
             }
         }
 
-        private static class Class1918
+        private static class NetworkTypeConverter
         {
             public static NetworkMessageType Convert(NetworkEventType value)
             {
@@ -104,15 +102,15 @@ namespace TarkovServerU19.BSGClasses
             }
         }
 
-        private Dictionary<int, GClass2298> dictionary_0 = new Dictionary<int, GClass2298>();
+        private Dictionary<int, NetworkHoster> IndexToHoster = new Dictionary<int, NetworkHoster>();
 
         private int int_0;
 
-        private Class1917 class1917_0;
+        private QosManager qosManager;
 
-        private int Int32_0 => int_0++;
+        private int Hosts => int_0++;
 
-        public bool IsStarted => dictionary_0.Count > 0;
+        public bool IsStarted => IndexToHoster.Count > 0;
 
         public void EarlyUpdate()
         {
@@ -122,9 +120,9 @@ namespace TarkovServerU19.BSGClasses
         {
         }
 
-        private bool method_0(int index, out GClass2298 host, out byte error)
+        private bool GetHost(int index, out NetworkHoster host, out byte error)
         {
-            if (dictionary_0.TryGetValue(index, out host))
+            if (IndexToHoster.TryGetValue(index, out host))
             {
                 error = 0;
                 return true;
@@ -135,18 +133,20 @@ namespace TarkovServerU19.BSGClasses
 
         public int AddHost(HostTopology topology, int port, string ip)
         {
-            GClass2298 gClass = new GClass2298(topology, Int32_0, port, ip);
-            class1917_0 = new Class1917(topology);
-            dictionary_0.Add(gClass.Index, gClass);
+            Debug.Log("TransportManager.AddHost");
+            NetworkHoster gClass = new NetworkHoster(topology, Hosts, port, ip);
+            qosManager = new QosManager(topology);
+            IndexToHoster.Add(gClass.Index, gClass);
+            Debug.Log("TransportManager.AddHost DONE");
             return gClass.Index;
         }
 
         public bool RemoveHost(int index)
         {
-            if (method_0(index, out var host, out var _))
+            if (GetHost(index, out var host, out var _))
             {
                 host.Shutdown();
-                dictionary_0.Remove(host.Index);
+                IndexToHoster.Remove(host.Index);
                 return true;
             }
             return false;
@@ -154,7 +154,7 @@ namespace TarkovServerU19.BSGClasses
 
         public int Connect(int hostId, string address, int port, int specialConnectionId, out byte error)
         {
-            if (method_0(hostId, out var host, out error))
+            if (GetHost(hostId, out var host, out error))
             {
                 return host.Connect(address, port, out error);
             }
@@ -163,7 +163,7 @@ namespace TarkovServerU19.BSGClasses
 
         public bool Disconnect(int hostId, int connectionId, out byte error)
         {
-            if (method_0(hostId, out var host, out error))
+            if (GetHost(hostId, out var host, out error))
             {
                 return host.Disconnect(connectionId, out error);
             }
@@ -174,7 +174,7 @@ namespace TarkovServerU19.BSGClasses
         {
             network = NetworkID.Invalid;
             dstNode = NodeID.Invalid;
-            if (method_0(hostId, out var host, out error))
+            if (GetHost(hostId, out var host, out error))
             {
                 host.GetConnectionInfo(connectionId, out address, out port, out error);
                 return;
@@ -185,7 +185,7 @@ namespace TarkovServerU19.BSGClasses
 
         public int GetRtt(int hostId, int connectionId, out byte error)
         {
-            if (method_0(hostId, out var host, out error))
+            if (GetHost(hostId, out var host, out error))
             {
                 return host.GetRtt(connectionId, out error);
             }
@@ -194,7 +194,7 @@ namespace TarkovServerU19.BSGClasses
 
         public int GetLossPercent(int hostId, int connectionId, out byte error)
         {
-            if (method_0(hostId, out var host, out error))
+            if (GetHost(hostId, out var host, out error))
             {
                 return host.GetLossPercent(connectionId, out error);
             }
@@ -203,7 +203,7 @@ namespace TarkovServerU19.BSGClasses
 
         public int GetLossCount(int hostId, int connectionId, out byte error)
         {
-            if (method_0(hostId, out var host, out error))
+            if (GetHost(hostId, out var host, out error))
             {
                 return host.GetLossCount(connectionId, out error);
             }
@@ -212,10 +212,10 @@ namespace TarkovServerU19.BSGClasses
 
         public NetworkEventType ReceiveFromHost(int hostId, out int connectionId, out int channelId, byte[] buffer, out int bufferSize, out byte error)
         {
-            if (method_0(hostId, out var host, out error) && host.Receive(out connectionId, out var type, out var channel, buffer, out bufferSize, out error))
+            if (GetHost(hostId, out var host, out error) && host.Receive(out connectionId, out var type, out var channel, buffer, out bufferSize, out error))
             {
-                NetworkEventType result = Class1918.Convert(type);
-                channelId = class1917_0.ConvertIdentifier(channel);
+                NetworkEventType result = NetworkTypeConverter.Convert(type);
+                channelId = qosManager.ConvertIdentifier(channel);
                 return result;
             }
             connectionId = 0;
@@ -226,9 +226,9 @@ namespace TarkovServerU19.BSGClasses
 
         public bool Send(int hostId, int connectionId, int channelId, byte[] buffer, int bufferSize, out byte error)
         {
-            if (method_0(hostId, out var host, out error))
+            if (GetHost(hostId, out var host, out error))
             {
-                NetworkChannel channel = class1917_0.ConvertIdentifier(channelId);
+                NetworkChannel channel = qosManager.ConvertIdentifier(channelId);
                 return host.Send(connectionId, channel, buffer, bufferSize, out error);
             }
             return false;
@@ -236,22 +236,22 @@ namespace TarkovServerU19.BSGClasses
 
         public void Shutdown()
         {
-            KeyValuePair<int, GClass2298>[] array = dictionary_0.ToArray();
+            KeyValuePair<int, NetworkHoster>[] array = IndexToHoster.ToArray();
             for (int i = 0; i < array.Length; i++)
             {
                 var (key, gClass2) = array[i];
                 gClass2.Shutdown();
-                dictionary_0.Remove(key);
+                IndexToHoster.Remove(key);
             }
         }
 
-        public GStruct335 GetStatistics(int hostId, int connectionId)
+        public UDPStats GetStatistics(int hostId, int connectionId)
         {
-            if (method_0(hostId, out var host, out var _))
+            if (GetHost(hostId, out var host, out var _))
             {
                 return host.GetStatistics(connectionId);
             }
-            return default(GStruct335);
+            return default(UDPStats);
         }
     }
 }

@@ -1,110 +1,107 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
-using TarkovServerU19.BSGClasses;
+using System.Text;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.Networking.Types;
 
 namespace TarkovServerU19.Networking
 {
-    internal class NetworkTransportShit : INetworkTransport
+    public class TarkovTransportTest : INetworkTransport
     {
-        private static TransportManager transportManager = new TransportManager();
-
-        public bool IsStarted => transportManager.IsStarted;
-
-        public static void EarlyUpdate()
+        public bool IsStarted
         {
-            transportManager.EarlyUpdate();
-        }
-
-        public static void LateUpdate()
-        {
-            transportManager.LateUpdate();
+            get
+            {
+                return NetworkTransport.IsStarted;
+            }
         }
 
         public int AddHost(HostTopology topology, int port, string ip)
         {
             Debug.Log("AddHost");
-            return transportManager.AddHost(topology, port, ip);
+            return NetworkTransport.AddHost(topology, port, ip);
         }
 
         public int AddHostWithSimulator(HostTopology topology, int minTimeout, int maxTimeout, int port)
         {
             Debug.Log("AddHostWithSimulator");
-            throw new NotImplementedException();
+            return NetworkTransport.AddHostWithSimulator(topology, minTimeout, maxTimeout, port);
         }
 
         public int AddWebsocketHost(HostTopology topology, int port, string ip)
         {
             Debug.Log("AddWebsocketHost");
-            throw new NotImplementedException();
+            return NetworkTransport.AddWebsocketHost(topology, port, ip);
         }
 
         public int Connect(int hostId, string address, int port, int specialConnectionId, out byte error)
         {
             Debug.Log("Connect");
-            return transportManager.Connect(hostId, address, port, specialConnectionId, out error);
+            return NetworkTransport.Connect(hostId, address, port, specialConnectionId, out error);
         }
 
         public void ConnectAsNetworkHost(int hostId, string address, int port, NetworkID network, SourceID source, NodeID node, out byte error)
         {
             Debug.Log("ConnectAsNetworkHost");
-            throw new NotImplementedException();
+            NetworkTransport.ConnectAsNetworkHost(hostId, address, port, network, source, node, out error);
         }
 
         public int ConnectEndPoint(int hostId, EndPoint endPoint, int specialConnectionId, out byte error)
         {
             Debug.Log("ConnectEndPoint");
-            throw new NotImplementedException();
+            return NetworkTransport.ConnectEndPoint(hostId, endPoint, specialConnectionId, out error);
         }
 
         public int ConnectToNetworkPeer(int hostId, string address, int port, int specialConnectionId, int relaySlotId, NetworkID network, SourceID source, NodeID node, out byte error)
         {
             Debug.Log("ConnectToNetworkPeer");
-            throw new NotImplementedException();
+            return NetworkTransport.ConnectToNetworkPeer(hostId, address, port, specialConnectionId, relaySlotId, network, source, node, out error);
         }
 
         public int ConnectWithSimulator(int hostId, string address, int port, int specialConnectionId, out byte error, ConnectionSimulatorConfig conf)
         {
             Debug.Log("ConnectWithSimulator");
-            throw new NotImplementedException();
+            return NetworkTransport.ConnectWithSimulator(hostId, address, port, specialConnectionId, out error, conf);
         }
 
         public bool Disconnect(int hostId, int connectionId, out byte error)
         {
             Debug.Log("Disconnect");
-            return transportManager.Disconnect(hostId, connectionId, out error);
+            return NetworkTransport.Disconnect(hostId, connectionId, out error);
         }
 
         public bool DoesEndPointUsePlatformProtocols(EndPoint endPoint)
         {
             Debug.Log("DoesEndPointUsePlatformProtocols");
-            throw new NotImplementedException();
+            return NetworkTransport.DoesEndPointUsePlatformProtocols(endPoint);
         }
 
         public void GetBroadcastConnectionInfo(int hostId, out string address, out int port, out byte error)
         {
             Debug.Log("GetBroadcastConnectionInfo");
-            throw new NotImplementedException();
+            NetworkTransport.GetBroadcastConnectionInfo(hostId, out address, out port, out error);
         }
 
         public void GetBroadcastConnectionMessage(int hostId, byte[] buffer, int bufferSize, out int receivedSize, out byte error)
         {
             Debug.Log("GetBroadcastConnectionMessage");
-            throw new NotImplementedException();
+            NetworkTransport.GetBroadcastConnectionMessage(hostId, buffer, bufferSize, out receivedSize, out error);
         }
 
         public void GetConnectionInfo(int hostId, int connectionId, out string address, out int port, out NetworkID network, out NodeID dstNode, out byte error)
         {
             Debug.Log("GetConnectionInfo");
-            transportManager.GetConnectionInfo(hostId, connectionId, out address, out port, out network, out dstNode, out error);
+            NetworkTransport.GetConnectionInfo(hostId, connectionId, out address, out port, out network, out dstNode, out error);
         }
 
         public int GetCurrentRTT(int hostId, int connectionId, out byte error)
         {
             Debug.Log("GetCurrentRTT");
-            return transportManager.GetRtt(hostId, connectionId, out error);
+            return NetworkTransport.GetCurrentRTT(hostId, connectionId, out error);
         }
 
         public void Init()
@@ -116,90 +113,67 @@ namespace TarkovServerU19.Networking
         public void Init(GlobalConfig config)
         {
             Debug.Log("Init2");
-            throw new NotImplementedException();
+            NetworkTransport.Init(config);
         }
 
         public NetworkEventType Receive(out int hostId, out int connectionId, out int channelId, byte[] buffer, int bufferSize, out int receivedSize, out byte error)
         {
             Debug.Log("Receive");
-            throw new NotImplementedException();
+            return NetworkTransport.Receive(out hostId, out connectionId, out channelId, buffer, bufferSize, out receivedSize, out error);
         }
 
         public NetworkEventType ReceiveFromHost(int hostId, out int connectionId, out int channelId, byte[] buffer, int bufferSize, out int receivedSize, out byte error)
         {
             Debug.Log("ReceiveFromHost");
-            return transportManager.ReceiveFromHost(hostId, out connectionId, out channelId, buffer, out receivedSize, out error);
+            return NetworkTransport.ReceiveFromHost(hostId, out connectionId, out channelId, buffer, bufferSize, out receivedSize, out error);
         }
 
         public NetworkEventType ReceiveRelayEventFromHost(int hostId, out byte error)
         {
             Debug.Log("ReceiveRelayEventFromHost");
-            throw new NotImplementedException();
+            return NetworkTransport.ReceiveRelayEventFromHost(hostId, out error);
         }
 
         public bool RemoveHost(int hostId)
         {
             Debug.Log("RemoveHost");
-            return transportManager.RemoveHost(hostId);
+            return NetworkTransport.RemoveHost(hostId);
         }
 
-        public bool Send(int hostId, int connectionId, int channelId, byte[] buffer, int bufferSize, out byte error)
+        public bool Send(int hostId, int connectionId, int channelId, byte[] buffer, int size, out byte error)
         {
             Debug.Log("Send");
-            return transportManager.Send(hostId, connectionId, channelId, buffer, bufferSize, out error);
+            return NetworkTransport.Send(hostId, connectionId, channelId, buffer, size, out error);
         }
 
         public void SetBroadcastCredentials(int hostId, int key, int version, int subversion, out byte error)
         {
             Debug.Log("SetBroadcastCredentials");
-            throw new NotImplementedException();
+            NetworkTransport.SetBroadcastCredentials(hostId, key, version, subversion, out error);
         }
 
         public void SetPacketStat(int direction, int packetStatId, int numMsgs, int numBytes)
         {
             Debug.Log("SetPacketStat");
+            NetworkTransport.SetPacketStat(direction, packetStatId, numMsgs, numBytes);
         }
 
         public void Shutdown()
         {
             Debug.Log("Shutdown");
-            transportManager.Shutdown();
+            NetworkTransport.Shutdown();
         }
 
         public bool StartBroadcastDiscovery(int hostId, int broadcastPort, int key, int version, int subversion, byte[] buffer, int size, int timeout, out byte error)
         {
             Debug.Log("StartBroadcastDiscovery");
-            throw new NotImplementedException();
+            return NetworkTransport.StartBroadcastDiscovery(hostId, broadcastPort, key, version, subversion, buffer, size, timeout, out error);
         }
 
         public void StopBroadcastDiscovery()
         {
             Debug.Log("StopBroadcastDiscovery");
-            throw new NotImplementedException();
-        }
-
-        public static int GetRtt(int hostId, int connectionId, out byte error)
-        {
-            Debug.Log("GetRtt");
-            return transportManager.GetRtt(hostId, connectionId, out error);
-        }
-
-        public static int GetLossPercent(int hostId, int connectionId, out byte error)
-        {
-            Debug.Log("GetLossPercent");
-            return transportManager.GetLossPercent(hostId, connectionId, out error);
-        }
-
-        public static int GetLossCount(int hostId, int connectionId, out byte error)
-        {
-            Debug.Log("GetLossCount");
-            return transportManager.GetLossCount(hostId, connectionId, out error);
-        }
-
-        public static UDPStats GetStatistics(int hostId, int connectionId)
-        {
-            Debug.Log("GetStatistics");
-            return transportManager.GetStatistics(hostId, connectionId);
+            NetworkTransport.StopBroadcastDiscovery();
         }
     }
 }
