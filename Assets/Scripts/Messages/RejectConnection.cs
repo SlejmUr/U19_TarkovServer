@@ -19,10 +19,10 @@ namespace TarkovServerU19.Messages
             base.Serialize(writer);
         }
 
-        internal const int int_0 = 100500; //Internal Error: client and server location mismatch
-        internal const int int_1 = 100501; //Game aborted. Invalid user profile
-        internal const int int_2 = 100502; //Game aborted. Invalid session
-        internal const int int_3 = 100503; //Internal Error: client messaging queue fail
+        internal const int LocationMissmatch = 100500; //Internal Error: client and server location mismatch
+        internal const int InvalidProfile = 100501; //Game aborted. Invalid user profile
+        internal const int InvalidSession = 100502; //Game aborted. Invalid session
+        internal const int MessaginQueueFail = 100503; //Internal Error: client messaging queue fail
         internal int RealErrorCode; //Game aborted. Internal error
     }
 }

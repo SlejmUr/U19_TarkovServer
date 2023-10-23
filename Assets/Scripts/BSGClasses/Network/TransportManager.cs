@@ -104,11 +104,11 @@ namespace TarkovServerU19.BSGClasses
 
         private Dictionary<int, NetworkHoster> IndexToHoster = new Dictionary<int, NetworkHoster>();
 
-        private int int_0;
+        private int hostCount;
 
         private QosManager qosManager;
 
-        private int Hosts => int_0++;
+        private int Hosts => hostCount++;
 
         public bool IsStarted => IndexToHoster.Count > 0;
 

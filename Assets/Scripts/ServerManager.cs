@@ -33,7 +33,7 @@ namespace TarkovServerU19
             try
             {
                 Debug.developerConsoleVisible = true;
-                NetworkManager.activeTransport = new NetworkTransportShit();
+                NetworkManager.activeTransport = new TarkovNetworkTransport();
                 var tarkovConfig = ServerHelper.GetConnectionConfig();
                 HostTopology hostTopology = new HostTopology(tarkovConfig, 100);
                 LogFilter.current = LogFilter.FilterLevel.SetInScripting;

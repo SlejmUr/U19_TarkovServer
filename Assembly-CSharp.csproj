@@ -111,11 +111,12 @@
     <Compile Include="Assets\Scripts\Jsons\ResourceKey.cs" />
     <Compile Include="Assets\Scripts\Messages\AcceptConnection.cs" />
     <Compile Include="Assets\Scripts\Messages\ConnectSentPacket.cs" />
+    <Compile Include="Assets\Scripts\Messages\MessageManager.cs" />
     <Compile Include="Assets\Scripts\Messages\RejectConnection.cs" />
     <Compile Include="Assets\Scripts\Messages\SyncFromServer.cs" />
     <Compile Include="Assets\Scripts\Messages\SyncToClient.cs" />
     <Compile Include="Assets\Scripts\Messages\TheNightMare.cs" />
-    <Compile Include="Assets\Scripts\Networking\NetworkTransportShit.cs" />
+    <Compile Include="Assets\Scripts\Networking\TarkovNetworkTransport.cs" />
     <Compile Include="Assets\Scripts\Networking\TarkovNetworkManager.cs" />
     <Compile Include="Assets\Scripts\ServerHelper.cs" />
     <Compile Include="Assets\Scripts\ServerManager.cs" />
