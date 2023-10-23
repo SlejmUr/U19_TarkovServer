@@ -127,7 +127,6 @@ namespace TarkovServerU19.Networking
 
         public NetworkEventType ReceiveFromHost(int hostId, out int connectionId, out int channelId, byte[] buffer, int bufferSize, out int receivedSize, out byte error)
         {
-            Debug.Log("ReceiveFromHost");
             return transportManager.ReceiveFromHost(hostId, out connectionId, out channelId, buffer, out receivedSize, out error);
         }
 

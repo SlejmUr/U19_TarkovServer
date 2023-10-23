@@ -133,11 +133,9 @@ namespace TarkovServerU19.BSGClasses
 
         public int AddHost(HostTopology topology, int port, string ip)
         {
-            Debug.Log("TransportManager.AddHost");
             NetworkHoster gClass = new NetworkHoster(topology, Hosts, port, ip);
             qosManager = new QosManager(topology);
             IndexToHoster.Add(gClass.Index, gClass);
-            Debug.Log("TransportManager.AddHost DONE");
             return gClass.Index;
         }
 

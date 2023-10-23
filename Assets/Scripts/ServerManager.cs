@@ -46,10 +46,7 @@ namespace TarkovServerU19
                 managerserver.networkPort = ServerPort;
 				managerserver.StartServer(tarkovConfig, 100);
 				managerserver.scriptCRCCheck = false;
-                NetworkManager.activeTransport.Init();
-
-
-
+				managerserver.RegisterMessages();
 
 
 
