@@ -7,7 +7,6 @@ namespace TarkovServerU19
 {
     public class ServerManager : NetworkBehaviour
     {
-        public TarkovNetworkServer server;
 
 		public TarkovNetworkManager managerserver;
 
@@ -34,7 +33,7 @@ namespace TarkovServerU19
             try
             {
                 Debug.developerConsoleVisible = true;
-                NetworkManager.activeTransport = new TarkovTransportTest();
+                NetworkManager.activeTransport = new NetworkTransportShit();
                 var tarkovConfig = ServerHelper.GetConnectionConfig();
                 HostTopology hostTopology = new HostTopology(tarkovConfig, 100);
                 LogFilter.current = LogFilter.FilterLevel.SetInScripting;
@@ -70,13 +69,6 @@ namespace TarkovServerU19
                 server.RegisterHandler(35, Loaded); //MsgType.Ready
                 server.RegisterHandler(36, Loaded); //MsgType.NotReady
 				*/
-                server.RegisterHandler(147, Loaded); //Sending Request to join + OnAcceptResponse
-                server.RegisterHandler(148, Loaded); //OnRejectResponse (Contains Error in Int32)
-                server.RegisterHandler(168, Loaded); //battlEye packets
-                server.RegisterHandler(185, Loaded); //OnPartialCommand things | 0x020012D6 on latest (13.5)
-                server.RegisterHandler(188, Loaded); //The nightmare (ProfileId, Resourses Json, Customiation Json)
-                server.RegisterHandler(189, Loaded); //sync progress (to client)
-                server.RegisterHandler(190, Loaded); //sync progress (from client)
                 
                 /*
 				server.RegisterHandler(151, new NetworkMessageDelegate(this.method_14)); //spwaning world

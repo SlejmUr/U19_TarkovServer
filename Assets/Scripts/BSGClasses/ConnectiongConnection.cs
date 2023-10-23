@@ -3,18 +3,18 @@ using TarkovServerU19.BSGEnums;
 
 namespace TarkovServerU19.BSGClasses
 {
-    internal class GClass2294 : GClass2292
+    internal class ConnectiongConnection : AbstactConnection
     {
         private float float_0;
 
-        public GClass2294(Connection connection)
+        public ConnectiongConnection(Connection connection)
             : base(connection)
         {
         }
 
         public override void Enter()
         {
-            //Connection.Logger.LogInfo("Enter to the 'Connecting' state (address: " + Connection.Address + ")");
+            UnityEngine.Debug.Log("Enter to the 'Connecting' state (address: " + Connection.Address + ")");
             float_0 = Connection.CurrentTime;
         }
 
@@ -29,7 +29,7 @@ namespace TarkovServerU19.BSGClasses
                     Connection.ReceiveQueue.Enqueue(message);
                     break;
                 case NetworkMessageType.Connect:
-                    Connection.ChangeState(new GClass2295(Connection));
+                    Connection.ChangeState(new ConnectedConnection(Connection));
                     if (Convert.ToBoolean(message.Buffer.Array[0]))
                     {
                         Connection.SendConnect(syn: false, asc: true);
@@ -53,9 +53,9 @@ namespace TarkovServerU19.BSGClasses
         public void HandelTimeout()
         {
             float num = (float)Connection.CurrentTime - float_0;
-            if (num > (float)Connection.GClass2290_0.ConnectingTimeout)
+            if (num > (float)Connection.configuration.ConnectingTimeout)
             {
-                //Connection.Logger.LogError($"Timeout: Connection timed out after not receiving any message for {num}ms (address: {Connection.Address})");
+                UnityEngine.Debug.Log($"Timeout: Connection timed out after not receiving any message for {num}ms (address: {Connection.Address})");
                 Disconnect();
             }
         }
@@ -63,7 +63,7 @@ namespace TarkovServerU19.BSGClasses
         public override void Disconnect()
         {
             Connection.ReturnDisconnect();
-            Connection.ChangeState(new GClass2297(Connection));
+            Connection.ChangeState(new DisconnectConnection(Connection));
         }
     }
 }

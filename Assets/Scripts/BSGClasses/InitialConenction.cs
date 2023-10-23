@@ -2,21 +2,21 @@
 
 namespace TarkovServerU19.BSGClasses
 {
-    internal class GClass2293 : GClass2292
+    internal class InitialConenction : AbstactConnection
     {
-        public GClass2293(Connection connection)
+        public InitialConenction(Connection connection)
                 : base(connection)
         {
         }
 
         public override void Exit()
         {
-            //Connection.Logger.LogInfo("Exit to the 'Initial' state (address: " + Connection.Address + ")");
+            UnityEngine.Debug.Log("Exit to the 'Initial' state (address: " + Connection.Address + ")");
         }
 
         public override void Connect()
         {
-            Connection.ChangeState(new GClass2294(Connection));
+            Connection.ChangeState(new ConnectiongConnection(Connection));
             Connection.SendConnect(syn: true, asc: false);
         }
 
@@ -25,7 +25,7 @@ namespace TarkovServerU19.BSGClasses
             NetworkMessageType type = message.Type;
             if (type == NetworkMessageType.Connect)
             {
-                Connection.ChangeState(new GClass2294(Connection));
+                Connection.ChangeState(new ConnectiongConnection(Connection));
                 Connection.SendConnect(syn: true, asc: true);
                 message.Dispose();
             }

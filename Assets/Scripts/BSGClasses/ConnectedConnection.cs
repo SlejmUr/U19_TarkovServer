@@ -2,16 +2,16 @@
 
 namespace TarkovServerU19.BSGClasses
 {
-    internal class GClass2295 : GClass2292
+    internal class ConnectedConnection : AbstactConnection
     {
-        public GClass2295(Connection connection)
+        public ConnectedConnection(Connection connection)
             : base(connection)
         {
         }
 
         public override void Enter()
         {
-            //Connection.Logger.LogInfo("Enter to the 'Connected' state (address: " + Connection.Address + ")");
+            UnityEngine.Debug.Log("Enter to the 'Connected' state (address: " + Connection.Address + ")");
             Connection.LastReceiveTime = Connection.CurrentTime;
             method_0();
         }
@@ -35,9 +35,9 @@ namespace TarkovServerU19.BSGClasses
                     Connection.ReceiveQueue.Enqueue(message);
                     break;
                 case NetworkMessageType.Disconnect:
-                    //Connection.Logger.LogInfo("Receive disconnect (address: " + Connection.Address + ")");
+                    UnityEngine.Debug.Log("Receive disconnect (address: " + Connection.Address + ")");
                     Connection.ReturnDisconnect();
-                    Connection.ChangeState(new GClass2297(Connection));
+                    Connection.ChangeState(new DisconnectConnection(Connection));
                     message.Dispose();
                     break;
             }
@@ -56,7 +56,7 @@ namespace TarkovServerU19.BSGClasses
         {
             Connection.SendDisconnect();
             Connection.ReturnDisconnect();
-            Connection.ChangeState(new GClass2297(Connection));
+            Connection.ChangeState(new DisconnectConnection(Connection));
         }
 
         public override void Send(MessageSegment message)
@@ -67,10 +67,10 @@ namespace TarkovServerU19.BSGClasses
         public void HandelTimeout()
         {
             uint num = Connection.CurrentTime - Connection.LastReceiveTime;
-            if (num >= Connection.GClass2290_0.WaitTimeout)
+            if (num >= Connection.configuration.WaitTimeout)
             {
-                //Connection.Logger.LogError($"Timeout: Messages timed out after not receiving any message for {num}ms (address: {Connection.Address})");
-                Connection.ChangeState(new GClass2296(Connection));
+                UnityEngine.Debug.Log($"Timeout: Messages timed out after not receiving any message for {num}ms (address: {Connection.Address})");
+                Connection.ChangeState(new WaitingConnection(Connection));
             }
         }
 

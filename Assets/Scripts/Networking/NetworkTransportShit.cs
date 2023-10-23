@@ -116,7 +116,7 @@ namespace TarkovServerU19.Networking
         public void Init(GlobalConfig config)
         {
             Debug.Log("Init2");
-            throw new NotImplementedException();
+            NetworkTransport.Init(config);
         }
 
         public NetworkEventType Receive(out int hostId, out int connectionId, out int channelId, byte[] buffer, int bufferSize, out int receivedSize, out byte error)

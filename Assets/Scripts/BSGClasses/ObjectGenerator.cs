@@ -4,7 +4,7 @@ using System;
 
 namespace TarkovServerU19.BSGClasses
 {
-    public class GClass1006<T>
+    public class ObjectGenerator<T>
     {
         private readonly Stack<T> stack_0 = new Stack<T>();
 
@@ -12,7 +12,7 @@ namespace TarkovServerU19.BSGClasses
 
         public int Count => stack_0.Count;
 
-        public GClass1006(Func<T> objectGenerator, int initialCapacity)
+        public ObjectGenerator(Func<T> objectGenerator, int initialCapacity)
         {
             func_0 = objectGenerator;
             for (int i = 0; i < initialCapacity; i++)

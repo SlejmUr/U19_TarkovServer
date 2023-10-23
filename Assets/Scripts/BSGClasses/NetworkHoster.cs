@@ -61,7 +61,7 @@ namespace TarkovServerU19.BSGClasses
                     ConnectionChannelBuffer struct2;
                     while (this.ConCB.TryDequeue(out struct2))
                     {
-                        this.networkConnectionManager.Send(struct2.Connection, GClass2304.Get(struct2.Channel, NetworkMessageType.Data, struct2.Buffer), out b);
+                        this.networkConnectionManager.Send(struct2.Connection, MessageSegmentManager.Get(struct2.Channel, NetworkMessageType.Data, struct2.Buffer), out b);
                         ArrayPool<byte>.Shared.Return(struct2.Buffer.Array, false);
                     }
                     ConnectionID_strcut struct3;
