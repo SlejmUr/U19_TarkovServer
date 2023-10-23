@@ -47,6 +47,15 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="bsg.componentace.compression.libs.zlib">
+      <HintPath>Assets\DLLs\bsg.componentace.compression.libs.zlib.dll</HintPath>
+    </Reference>
+    <Reference Include="bsg.microsoft.extensions.objectpool">
+      <HintPath>Assets\DLLs\bsg.microsoft.extensions.objectpool.dll</HintPath>
+    </Reference>
+    <Reference Include="bsg.system.buffers">
+      <HintPath>Assets\DLLs\bsg.system.buffers.dll</HintPath>
+    </Reference>
     <Reference Include="kcp">
       <HintPath>Assets\DLLs\kcp.dll</HintPath>
     </Reference>
@@ -67,7 +76,10 @@
     <Compile Include="Assets\Scripts\BSGClasses\AcceptConfig\PlayerStateLimitsExt.cs" />
     <Compile Include="Assets\Scripts\BSGClasses\Configuration.cs" />
     <Compile Include="Assets\Scripts\BSGClasses\Connections\Connection.cs" />
+    <Compile Include="Assets\Scripts\BSGClasses\TimeHandler.cs" />
     <Compile Include="Assets\Scripts\BSGClasses\Network\UDP\Disordered.cs" />
+    <Compile Include="Assets\Scripts\BSGClasses\WeatherClass.cs" />
+    <Compile Include="Assets\Scripts\BSGEnums\EWeatherType.cs" />
     <Compile Include="Assets\Scripts\Helpers\ObjectGenerator.cs" />
     <Compile Include="Assets\Scripts\BSGClasses\Connections\AbstactConnection.cs" />
     <Compile Include="Assets\Scripts\BSGClasses\Connections\InitialConenction.cs" />

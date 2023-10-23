@@ -32,12 +32,11 @@ namespace TarkovServerU19
         {
             try
             {
-                Debug.developerConsoleVisible = true;
                 NetworkManager.activeTransport = new TarkovNetworkTransport();
                 var tarkovConfig = ServerHelper.GetConnectionConfig();
                 HostTopology hostTopology = new HostTopology(tarkovConfig, 100);
-                LogFilter.current = LogFilter.FilterLevel.SetInScripting;
-                managerserver.logLevel = LogFilter.FilterLevel.SetInScripting;
+                LogFilter.current = LogFilter.FilterLevel.Warn;
+                managerserver.logLevel = LogFilter.FilterLevel.Warn;
 
 				managerserver.maxConnections = 100;
 				managerserver.name = "fucktarkov";
@@ -47,26 +46,7 @@ namespace TarkovServerU19
 				managerserver.StartServer(tarkovConfig, 100);
 				managerserver.scriptCRCCheck = false;
 				managerserver.RegisterMessages();
-
-
-
-
-                /*
-                server = new TarkovNetworkServer();
-                server.Configure(hostTopology);
-                server.Initialize();
-
-                //NetworkManager.activeTransport.Init();
-                var isListen = server.Listen(ServerIP, ServerPort);*/
-                //Console.WriteLine(isListen);
                 Debug.Log("Server Started");
-				/*
-                server.RegisterHandler(32, Loaded); //OnConnect
-                server.RegisterHandler(33, Loaded); //OnDisconnect
-                server.RegisterHandler(35, Loaded); //MsgType.Ready
-                server.RegisterHandler(36, Loaded); //MsgType.NotReady
-				*/
-                
                 /*
 				server.RegisterHandler(151, new NetworkMessageDelegate(this.method_14)); //spwaning world
 				server.RegisterHandler(152, new NetworkMessageDelegate(this.interface7_0.WorldUnspawn)); //unspawing world
@@ -195,12 +175,6 @@ namespace TarkovServerU19
             }
 
         }
-
-        public static void Loaded(NetworkMessage msg)
-        {
-            Debug.Log(msg.channelId + " " + msg.msgType + " " + msg.conn.connectionId);
-        }
-
 
         public void Stop()
         {
