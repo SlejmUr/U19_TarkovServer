@@ -13,7 +13,7 @@ namespace TarkovServerU19.BSGClasses
 
         public float averageValue;
 
-        private GClass1008<int> gclass1008_0 = new GClass1008<int>(8);
+        private CustomBuffer<int> gclass1008_0 = new CustomBuffer<int>(8);
 
         public void Increment()
         {

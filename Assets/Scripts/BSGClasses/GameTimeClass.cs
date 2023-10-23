@@ -7,9 +7,9 @@ namespace TarkovServerU19.BSGClasses
     internal class GameTimeClass
     {
 
-        internal bool Boolean_0 { get; private set; }
-        internal DateTime DateTime_0 { get; private set; }
-        internal DateTime DateTime_1 { get; private set; }
+        internal bool IsDebug { get; private set; }
+        internal DateTime RealTime { get; private set; }
+        internal DateTime GameTime { get; private set; }
         public float TimeFactor { get; private set; }
 
         private float _realtimeSinceStartup;
@@ -18,16 +18,16 @@ namespace TarkovServerU19.BSGClasses
         internal GameTimeClass(DateTime realDateTime, DateTime gameDateTime, float timeFactor, bool debug = false)
         {
             this._realtimeSinceStartup = Time.realtimeSinceStartup;
-            this.DateTime_0 = realDateTime;
-            this.DateTime_1 = gameDateTime;
+            this.RealTime = realDateTime;
+            this.GameTime = gameDateTime;
             this.TimeFactor = timeFactor;
-            this.Boolean_0 = debug;
+            this.IsDebug = debug;
             Debug.Log(string.Concat(new object[]
             {
                 "RealDateTime:",
-                this.DateTime_0,
+                this.RealTime,
                 "  GameDateTime:",
-                this.DateTime_1,
+                this.GameTime,
                 "  factor:",
                 this.TimeFactor,
                 " debug:",
@@ -52,8 +52,8 @@ namespace TarkovServerU19.BSGClasses
             }
             else
             {
-                writer.Write(this.DateTime_0.ToBinary());
-                writer.Write(this.DateTime_1.ToBinary());
+                writer.Write(this.RealTime.ToBinary());
+                writer.Write(this.GameTime.ToBinary());
             }
             writer.Write(this.TimeFactor);
         }
@@ -61,13 +61,13 @@ namespace TarkovServerU19.BSGClasses
         private DateTime method_0()
         {
             float num = Time.realtimeSinceStartup - this._realtimeSinceStartup;
-            return this.DateTime_0 + TimeSpan.FromSeconds((double)num);
+            return this.RealTime + TimeSpan.FromSeconds((double)num);
         }
 
         public DateTime Calculate()
         {
-            TimeSpan timeSpan = this.method_0() - this.DateTime_0;
-            return this.DateTime_1 + TimeSpan.FromTicks((long)((float)timeSpan.Ticks * this.TimeFactor * this.TimeFactorMod));
+            TimeSpan timeSpan = this.method_0() - this.RealTime;
+            return this.GameTime + TimeSpan.FromTicks((long)((float)timeSpan.Ticks * this.TimeFactor * this.TimeFactorMod));
         }
     }
 }

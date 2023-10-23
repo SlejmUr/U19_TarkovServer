@@ -48,9 +48,9 @@ namespace TarkovServerU19.BSGClasses
         public float averageLosePercentValue;
 
         // Token: 0x0400A9DD RID: 43485
-        private GClass1008<int> gclass1008_0 = new GClass1008<int>(16);
+        private CustomBuffer<int> gclass1008_0 = new CustomBuffer<int>(16);
 
         // Token: 0x0400A9DE RID: 43486
-        private GClass1008<float> gclass1008_1 = new GClass1008<float>(16);
+        private CustomBuffer<float> gclass1008_1 = new CustomBuffer<float>(16);
     }
 }

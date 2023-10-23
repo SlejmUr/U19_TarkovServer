@@ -9,7 +9,7 @@ namespace TarkovServerU19.BSGClasses
 
         public float averageValue;
 
-        private GClass1008<float> gclass1008_0 = new GClass1008<float>(8);
+        private CustomBuffer<float> gclass1008_0 = new CustomBuffer<float>(8);
 
         public void Set(float value)
         {
