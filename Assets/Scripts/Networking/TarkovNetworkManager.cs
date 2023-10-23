@@ -22,5 +22,16 @@ namespace TarkovServerU19.Networking
             base.OnClientDisconnect(conn);
         }
 
+        public override void OnServerConnect(NetworkConnection conn)
+        {
+            Debug.Log("OnServerConnect");
+            base.OnServerConnect(conn);
+        }
+
+        public override void OnClientError(NetworkConnection conn, int errorCode)
+        {
+            Debug.Log("OnClientError " + errorCode);
+            base.OnClientError(conn, errorCode);
+        }
     }
 }

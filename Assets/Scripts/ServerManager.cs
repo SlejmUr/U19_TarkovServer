@@ -46,7 +46,7 @@ namespace TarkovServerU19
 				managerserver.serverBindToIP = true;
                 managerserver.networkPort = ServerPort;
 				managerserver.StartServer(tarkovConfig, 100);
-
+				managerserver.scriptCRCCheck = false;
                 NetworkManager.activeTransport.Init();
 
 
@@ -213,25 +213,9 @@ namespace TarkovServerU19
         }
 
 
-
-
-        void LateUpdate()
-        {
-            if (server != null)
-            {
-                if (server.serverHostId != -1)
-                {
-                    //Debug.Log("Timer");
-                    server.UpdateConnections();
-					server.Update();
-                }
-            }
-        }
-
-
         public void Stop()
         {
-            server.Stop();
+            managerserver.StopServer();
             Console.WriteLine("MLServer Stopped!");
         }
     }
