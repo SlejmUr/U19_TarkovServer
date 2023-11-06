@@ -71,15 +71,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Attributes\OriginalNameAttribute.cs" />
+    <Compile Include="Assets\Scripts\BSGClasses\AbstractGameSession.cs" />
     <Compile Include="Assets\Scripts\BSGClasses\AcceptConfig\Config.cs" />
     <Compile Include="Assets\Scripts\BSGClasses\AcceptConfig\PlayerStateLimits.cs" />
     <Compile Include="Assets\Scripts\BSGClasses\AcceptConfig\PlayerStateLimitsExt.cs" />
     <Compile Include="Assets\Scripts\BSGClasses\Configuration.cs" />
     <Compile Include="Assets\Scripts\BSGClasses\Connections\Connection.cs" />
+    <Compile Include="Assets\Scripts\BSGClasses\LighthouseTraderZoneDataPacket.cs" />
     <Compile Include="Assets\Scripts\BSGClasses\TimeHandler.cs" />
     <Compile Include="Assets\Scripts\BSGClasses\Network\UDP\Disordered.cs" />
     <Compile Include="Assets\Scripts\BSGClasses\WeatherClass.cs" />
+    <Compile Include="Assets\Scripts\BSGEnums\CounterTag.cs" />
+    <Compile Include="Assets\Scripts\BSGEnums\EPlayerSide.cs" />
     <Compile Include="Assets\Scripts\BSGEnums\EWeatherType.cs" />
+    <Compile Include="Assets\Scripts\BSGEnums\ExitStatus.cs" />
+    <Compile Include="Assets\Scripts\BSGEnums\RadioTransmitterData.cs" />
     <Compile Include="Assets\Scripts\Helpers\ObjectGenerator.cs" />
     <Compile Include="Assets\Scripts\BSGClasses\Connections\AbstactConnection.cs" />
     <Compile Include="Assets\Scripts\BSGClasses\Connections\InitialConenction.cs" />
@@ -120,7 +126,9 @@
     <Compile Include="Assets\Scripts\Helpers\CustomBuffer.cs" />
     <Compile Include="Assets\Scripts\Helpers\KVShitter.cs" />
     <Compile Include="Assets\Scripts\Helpers\SocketHelper.cs" />
-    <Compile Include="Assets\Scripts\Jsons\ResourceKey.cs" />
+    <Compile Include="Assets\Scripts\Http\HTTP_Client.cs" />
+    <Compile Include="Assets\Scripts\BSGClasses\ResourceKey.cs" />
+    <Compile Include="Assets\Scripts\Jsons\RegisterServer.cs" />
     <Compile Include="Assets\Scripts\Messages\AcceptConnection.cs" />
     <Compile Include="Assets\Scripts\Messages\ConnectSentPacket.cs" />
     <Compile Include="Assets\Scripts\Messages\MessageManager.cs" />

@@ -15,6 +15,27 @@ namespace TarkovServerU19.BSGClasses
         private float _realtimeSinceStartup;
 
         public float TimeFactorMod = 1f;
+
+        internal GameTimeClass(float startup, DateTime realDateTime, DateTime gameDateTime, float timeFactor, bool debug = false)
+        {
+            this._realtimeSinceStartup = startup;
+            this.RealTime = realDateTime;
+            this.GameTime = gameDateTime;
+            this.TimeFactor = timeFactor;
+            this.IsDebug = debug;
+            Debug.Log(string.Concat(new object[]
+            {
+                "RealDateTime:",
+                this.RealTime,
+                "  GameDateTime:",
+                this.GameTime,
+                "  factor:",
+                this.TimeFactor,
+                " debug:",
+                debug.ToString()
+            }));
+        }
+
         internal GameTimeClass(DateTime realDateTime, DateTime gameDateTime, float timeFactor, bool debug = false)
         {
             this._realtimeSinceStartup = Time.realtimeSinceStartup;

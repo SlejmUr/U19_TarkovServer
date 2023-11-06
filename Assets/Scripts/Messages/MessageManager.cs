@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TarkovServerU19.BSGClasses;
+using TarkovServerU19.Http;
 using UnityEngine.Networking;
 
 namespace TarkovServerU19.Messages
@@ -23,11 +24,17 @@ namespace TarkovServerU19.Messages
                 RealErrorCode = RejectConnection.LocationMissmatch
             };
 
+            var interactables = HTTP_Client.POSTString("/ts/GetLocationInteractables", connectPackage.LocationId);
+            var customizables = HTTP_Client.POSTString("/ts/GetAccountCustomiztationIds", connectPackage.ProfileId);
+
+            var Interactables_List = JsonConvert.DeserializeObject<Dictionary<string, int>>(customizables);
+            var custom_List = JsonConvert.DeserializeObject<string[]>(customizables);
+
             AcceptConnection acceptConnection = new AcceptConnection()
             {
                 antiCheatPort = 0,
                 speedLimitsEnabled = false,
-                fixedDeltaTime = 0,
+                fixedDeltaTime = 0.016666668f,
                 decryptionEnabled = false,
                 encryptionEnabled = false,
                 bounds = new UnityEngine.Bounds(new UnityEngine.Vector3(0f, 0f, 0f), new UnityEngine.Vector3(5000f, 5000f, 5000f)),
@@ -38,12 +45,11 @@ namespace TarkovServerU19.Messages
                 voipSettings = BSGClasses.VOIP.VoipSettings.Default,
                 gameTimeClass = new(DateTime.Now.AddMinutes(30), DateTime.Now.AddMinutes(50), 7f),
                 sessionId = new byte[] { },
-                CompressedInteractables = SimpleZlib.CompressToBytes(JsonConvert.SerializeObject(new Dictionary<string, int>()), 0),
-                CompressedCustomizationIds = SimpleZlib.CompressToBytes(JsonConvert.SerializeObject(new string[] { }), 0),
-                CompressedResources = SimpleZlib.CompressToBytes(JsonConvert.SerializeObject(new Jsons.ResourceKey[] { }), 0),
+                CompressedInteractables = SimpleZlib.CompressToBytes(JsonConvert.SerializeObject(new Dictionary<string, int>(Interactables_List)), 0),
+                CompressedCustomizationIds = SimpleZlib.CompressToBytes(JsonConvert.SerializeObject(custom_List), 0),
+                CompressedResources = SimpleZlib.CompressToBytes(JsonConvert.SerializeObject(new ResourceKey[] { }), 0),
                 CompressedWeathers = SimpleZlib.CompressToBytes(JsonConvert.SerializeObject(new WeatherClass[] { WeatherClass.CreateDefault() }), 0),
             };
-
             msg.conn.Send(148, rejectConnection);
         }
 

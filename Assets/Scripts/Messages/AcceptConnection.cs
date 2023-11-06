@@ -50,7 +50,7 @@ namespace TarkovServerU19.Messages
         {
             writer.Write(this.encryptionEnabled);
             writer.Write(this.decryptionEnabled);
-            this.gameTimeClass.Serialize(writer, true);
+            this.gameTimeClass.Serialize(writer, false);
             writer.WriteBytesFull(this.CompressedResources);
             writer.WriteBytesFull(this.CompressedCustomizationIds);
             writer.WriteBytesFull(this.CompressedWeathers);

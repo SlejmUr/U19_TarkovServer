@@ -1,5 +1,7 @@
 ﻿using System;
+using TarkovServerU19.Http;
 using TarkovServerU19.Networking;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -15,7 +17,8 @@ namespace TarkovServerU19
 
         [SerializeField]
         public int ServerPort;
- 
+
+		static Guid ServerGUID;
 
 		public void SetServerIP(string IP)
 		{
@@ -32,6 +35,7 @@ namespace TarkovServerU19
         {
             try
             {
+				ServerGUID = Guid.NewGuid();
                 NetworkManager.activeTransport = new TarkovNetworkTransport();
                 var tarkovConfig = ServerHelper.GetConnectionConfig();
                 HostTopology hostTopology = new HostTopology(tarkovConfig, 100);
@@ -39,7 +43,7 @@ namespace TarkovServerU19
                 managerserver.logLevel = LogFilter.FilterLevel.Warn;
 
 				managerserver.maxConnections = 100;
-				managerserver.name = "fucktarkov";
+				managerserver.name = "U19_Server_"+ ServerGUID.ToString();
 				managerserver.serverBindAddress = ServerIP;
 				managerserver.serverBindToIP = true;
                 managerserver.networkPort = ServerPort;
@@ -168,6 +172,12 @@ namespace TarkovServerU19
 				*/
 				//NetworkCRC.RegisterBehaviour("HlapiPlayer", 0);
                 Debug.Log("RegisterCommandDelegate's done");
+                HTTP_Client.POSTAsJsonNoRSP("/ts/registerServer", new Jsons.RegisterServer() 
+				{ 
+					GUID = ServerGUID.ToString(),
+					IP = ServerIP,
+					Port = ServerPort
+                });
             }
             catch (Exception ex)
             {
@@ -178,6 +188,10 @@ namespace TarkovServerU19
 
         public void Stop()
         {
+            HTTP_Client.POSTAsJsonNoRSP("/ts/unregisterServer", new Jsons.UnregisterServer()
+            {
+                GUID = ServerGUID.ToString()
+            });
             managerserver.StopServer();
             Console.WriteLine("MLServer Stopped!");
         }

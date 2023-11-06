@@ -1,4 +1,4 @@
-﻿namespace TarkovServerU19.Jsons
+﻿namespace TarkovServerU19.BSGClasses
 {
     public class ResourceKey
     {
