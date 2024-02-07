@@ -27,7 +27,7 @@ namespace TarkovServerU19.Messages
             var interactables = HTTP_Client.POSTString("/ts/GetLocationInteractables", connectPackage.LocationId);
             var customizables = HTTP_Client.POSTString("/ts/GetAccountCustomiztationIds", connectPackage.ProfileId);
 
-            var Interactables_List = JsonConvert.DeserializeObject<Dictionary<string, int>>(customizables);
+            var Interactables_List = JsonConvert.DeserializeObject<Dictionary<string, int>>(interactables);
             var custom_List = JsonConvert.DeserializeObject<string[]>(customizables);
 
             AcceptConnection acceptConnection = new AcceptConnection()
@@ -40,11 +40,11 @@ namespace TarkovServerU19.Messages
                 bounds = new UnityEngine.Bounds(new UnityEngine.Vector3(0f, 0f, 0f), new UnityEngine.Vector3(5000f, 5000f, 5000f)),
                 canRestart = false,
                 MemberCategory = EMemberCategory.Default,
-                GitVersion = new(),
+                GitVersion = new GitVersion(),
                 NetLogsLevel = ENetLogsLevel.Normal,
                 voipSettings = BSGClasses.VOIP.VoipSettings.Default,
-                gameTimeClass = new(DateTime.Now.AddMinutes(30), DateTime.Now.AddMinutes(50), 7f),
-                sessionId = new byte[] { },
+                gameTimeClass = new GameTimeClass(DateTime.Now.AddMinutes(30), DateTime.Now.AddMinutes(50), 7f),
+                sessionId = new byte[] { 0x00, 0xFF, 0xAA },
                 CompressedInteractables = SimpleZlib.CompressToBytes(JsonConvert.SerializeObject(new Dictionary<string, int>(Interactables_List)), 0),
                 CompressedCustomizationIds = SimpleZlib.CompressToBytes(JsonConvert.SerializeObject(custom_List), 0),
                 CompressedResources = SimpleZlib.CompressToBytes(JsonConvert.SerializeObject(new ResourceKey[] { }), 0),

@@ -1142,7 +1142,7 @@ namespace TarkovServerU19.BSGClasses
                 Debug.LogError("RPC RpcSendClientRadioTransmitterData called on server.");
                 return;
             }
-            ((AbstractGameSession)obj).RpcSendClientRadioTransmitterData(GClass3133._ReadRadioTransmitterData_None(reader));
+            //((AbstractGameSession)obj).RpcSendClientRadioTransmitterData(GClass3133._ReadRadioTransmitterData_None(reader));
         }
 
         protected static void InvokeRpcRpcSendObserverRadioTransmitterData(NetworkBehaviour obj, NetworkReader reader)
@@ -1152,7 +1152,7 @@ namespace TarkovServerU19.BSGClasses
                 Debug.LogError("RPC RpcSendObserverRadioTransmitterData called on server.");
                 return;
             }
-            ((AbstractGameSession)obj).RpcSendObserverRadioTransmitterData(GClass3133._ReadRadioTransmitterData_None(reader));
+            //((AbstractGameSession)obj).RpcSendObserverRadioTransmitterData(GClass3133._ReadRadioTransmitterData_None(reader));
         }
 
         protected static void InvokeRpcRpcSyncLighthouseTraderZoneData(NetworkBehaviour obj, NetworkReader reader)
@@ -1162,7 +1162,7 @@ namespace TarkovServerU19.BSGClasses
                 Debug.LogError("RPC RpcSyncLighthouseTraderZoneData called on server.");
                 return;
             }
-            ((AbstractGameSession)obj).RpcSyncLighthouseTraderZoneData(GClass3133._ReadLighthouseTraderZoneData_None(reader));
+            //((AbstractGameSession)obj).RpcSyncLighthouseTraderZoneData(GClass3133._ReadLighthouseTraderZoneData_None(reader));
         }
 
         public void CallRpcGameSpawned()
@@ -1518,7 +1518,7 @@ namespace TarkovServerU19.BSGClasses
             networkWriter.Write(2);
             networkWriter.WritePackedUInt32((uint)AbstractGameSession.int_43);
             networkWriter.Write(base.GetComponent<NetworkIdentity>().netId);
-            GClass3133._WriteRadioTransmitterData_None(networkWriter, data);
+            //GClass3133._WriteRadioTransmitterData_None(networkWriter, data);
             this.SendRPCInternal(networkWriter, 0, "RpcSendClientRadioTransmitterData");
         }
 
@@ -1534,7 +1534,7 @@ namespace TarkovServerU19.BSGClasses
             networkWriter.Write(2);
             networkWriter.WritePackedUInt32((uint)AbstractGameSession.int_44);
             networkWriter.Write(base.GetComponent<NetworkIdentity>().netId);
-            GClass3133._WriteRadioTransmitterData_None(networkWriter, data);
+            //GClass3133._WriteRadioTransmitterData_None(networkWriter, data);
             this.SendRPCInternal(networkWriter, 0, "RpcSendObserverRadioTransmitterData");
         }
 
@@ -1550,8 +1550,145 @@ namespace TarkovServerU19.BSGClasses
             networkWriter.Write(2);
             networkWriter.WritePackedUInt32((uint)AbstractGameSession.int_45);
             networkWriter.Write(base.GetComponent<NetworkIdentity>().netId);
-            GClass3133._WriteLighthouseTraderZoneData_None(networkWriter, data);
+            //GClass3133._WriteLighthouseTraderZoneData_None(networkWriter, data);
             this.SendRPCInternal(networkWriter, 0, "RpcSyncLighthouseTraderZoneData");
         }
+
+        private static int int_0 = -1723132743;
+
+        // Token: 0x04005EA4 RID: 24228
+        private static int int_1;
+
+        // Token: 0x04005EA5 RID: 24229
+        private static int int_2;
+
+        // Token: 0x04005EA6 RID: 24230
+        private static int int_3;
+
+        // Token: 0x04005EA7 RID: 24231
+        private static int int_4;
+
+        // Token: 0x04005EA8 RID: 24232
+        private static int int_5;
+
+        // Token: 0x04005EA9 RID: 24233
+        private static int int_6;
+
+        // Token: 0x04005EAA RID: 24234
+        private static int int_7;
+
+        // Token: 0x04005EAB RID: 24235
+        private static int int_8;
+
+        // Token: 0x04005EAC RID: 24236
+        private static int int_9;
+
+        // Token: 0x04005EAD RID: 24237
+        private static int int_10;
+
+        // Token: 0x04005EAE RID: 24238
+        private static int int_11;
+
+        // Token: 0x04005EAF RID: 24239
+        private static int int_12;
+
+        // Token: 0x04005EB0 RID: 24240
+        private static int int_13;
+
+        // Token: 0x04005EB1 RID: 24241
+        private static int int_14;
+
+        // Token: 0x04005EB2 RID: 24242
+        private static int int_15;
+
+        // Token: 0x04005EB3 RID: 24243
+        private static int int_16;
+
+        // Token: 0x04005EB4 RID: 24244
+        private static int int_17;
+
+        // Token: 0x04005EB5 RID: 24245
+        private static int int_18;
+
+        // Token: 0x04005EB6 RID: 24246
+        private static int int_19;
+
+        // Token: 0x04005EB7 RID: 24247
+        private static int int_20;
+
+        // Token: 0x04005EB8 RID: 24248
+        private static int int_21;
+
+        // Token: 0x04005EB9 RID: 24249
+        private static int int_22;
+
+        // Token: 0x04005EBA RID: 24250
+        private static int int_23;
+
+        // Token: 0x04005EBB RID: 24251
+        private static int int_24;
+
+        // Token: 0x04005EBC RID: 24252
+        private static int int_25;
+
+        // Token: 0x04005EBD RID: 24253
+        private static int int_26;
+
+        // Token: 0x04005EBE RID: 24254
+        private static int int_27;
+
+        // Token: 0x04005EBF RID: 24255
+        private static int int_28;
+
+        // Token: 0x04005EC0 RID: 24256
+        private static int int_29;
+
+        // Token: 0x04005EC1 RID: 24257
+        private static int int_30;
+
+        // Token: 0x04005EC2 RID: 24258
+        private static int int_31;
+
+        // Token: 0x04005EC3 RID: 24259
+        private static int int_32;
+
+        // Token: 0x04005EC4 RID: 24260
+        private static int int_33;
+
+        // Token: 0x04005EC5 RID: 24261
+        private static int int_34;
+
+        // Token: 0x04005EC6 RID: 24262
+        private static int int_35;
+
+        // Token: 0x04005EC7 RID: 24263
+        private static int int_36;
+
+        // Token: 0x04005EC8 RID: 24264
+        private static int int_37;
+
+        // Token: 0x04005EC9 RID: 24265
+        private static int int_38;
+
+        // Token: 0x04005ECA RID: 24266
+        private static int int_39;
+
+        // Token: 0x04005ECB RID: 24267
+        private static int int_40;
+
+        // Token: 0x04005ECC RID: 24268
+        private static int int_41;
+
+        // Token: 0x04005ECD RID: 24269
+        private static int int_42;
+
+        // Token: 0x04005ECE RID: 24270
+        private static int int_43;
+
+        // Token: 0x04005ECF RID: 24271
+        private static int int_44;
+
+        // Token: 0x04005ED0 RID: 24272
+        private static int int_45;
     }
 }
