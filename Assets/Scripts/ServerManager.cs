@@ -18,7 +18,13 @@ namespace TarkovServerU19
         [SerializeField]
         public int ServerPort;
 
-		static Guid ServerGUID;
+		[SerializeField]
+        public string Map;
+
+        [SerializeField]
+        public int MaxConnection = 100;
+
+        static Guid ServerGUID;
 
 		public void SetServerIP(string IP)
 		{
@@ -31,23 +37,31 @@ namespace TarkovServerU19
             ServerPort = int.Parse(port);
         }
 
+		public void SetMap(string map)
+        {
+            Map = map;
+        }
+
         public void StartServer()
         {
             try
             {
 				ServerGUID = Guid.NewGuid();
+				TarkovSocket.Start(ServerGUID.ToString());
+
+
                 NetworkManager.activeTransport = new TarkovNetworkTransport();
                 var tarkovConfig = ServerHelper.GetConnectionConfig();
-                HostTopology hostTopology = new HostTopology(tarkovConfig, 100);
+                HostTopology hostTopology = new HostTopology(tarkovConfig, MaxConnection);
                 LogFilter.current = LogFilter.FilterLevel.Warn;
                 managerserver.logLevel = LogFilter.FilterLevel.Warn;
 
-				managerserver.maxConnections = 100;
+				managerserver.maxConnections = MaxConnection;
 				managerserver.name = "U19_Server_"+ ServerGUID.ToString();
 				managerserver.serverBindAddress = ServerIP;
 				managerserver.serverBindToIP = true;
                 managerserver.networkPort = ServerPort;
-				managerserver.StartServer(tarkovConfig, 100);
+				managerserver.StartServer(tarkovConfig, MaxConnection);
 				managerserver.scriptCRCCheck = false;
 				managerserver.RegisterMessages();
                 Debug.Log("Server Started");
@@ -170,8 +184,9 @@ namespace TarkovServerU19
 				HlapiPlayer.int_1 = 1332331777;
 				NetworkBehaviour.RegisterRpcDelegate(typeof(HlapiPlayer), HlapiPlayer.int_1, new NetworkBehaviour.CmdDelegate(HlapiPlayer.InvokeRpcRpcSetPlayerName));
 				*/
-				//NetworkCRC.RegisterBehaviour("HlapiPlayer", 0);
+                //NetworkCRC.RegisterBehaviour("HlapiPlayer", 0);
                 Debug.Log("RegisterCommandDelegate's done");
+				
                 HTTP_Client.POSTAsJsonNoRSP("/ts/registerServer", new Jsons.RegisterServer() 
 				{ 
 					GUID = ServerGUID.ToString(),
@@ -188,6 +203,8 @@ namespace TarkovServerU19
 
         public void Stop()
         {
+			TarkovSocket.Stop();
+			
             HTTP_Client.POSTAsJsonNoRSP("/ts/unregisterServer", new Jsons.UnregisterServer()
             {
                 GUID = ServerGUID.ToString()

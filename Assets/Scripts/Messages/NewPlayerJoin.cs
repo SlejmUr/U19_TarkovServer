@@ -5,7 +5,7 @@ namespace TarkovServerU19.Messages
     /// <summary>
     /// Packet 188
     /// </summary>
-    public class TheNightMare : MessageBase
+    public class NewPlayerJoin : MessageBase
     {
         public override void Deserialize(NetworkReader reader)
         {

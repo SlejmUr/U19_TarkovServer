@@ -8,6 +8,12 @@ namespace TarkovServerU19.Networking
 {
     public class TarkovNetworkManager : NetworkManager
     {
+        public override void OnServerReady(NetworkConnection conn)
+        {
+            //  Our client ready!
+            base.OnServerReady(conn);
+        }
+
         public void RegisterMessages()
         {
             NetworkServer.RegisterHandler((short)MsgTypeEnum.ConnectionRequest, new NetworkMessageDelegate(MessageManager.ConnectionRequest)); //Sending Request to join + OnAcceptResponse
@@ -17,7 +23,7 @@ namespace TarkovServerU19.Networking
             NetworkServer.RegisterHandler((short)188, new NetworkMessageDelegate(Loaded)); //The nightmare (ProfileId, Resourses Json, Customiation Json)
             NetworkServer.RegisterHandler((short)189, new NetworkMessageDelegate(Loaded)); //sync progress (to client)
             NetworkServer.RegisterHandler((short)190, new NetworkMessageDelegate(Loaded)); //sync progress (from client)
-
+            NetworkCRC.RegisterBehaviour("AbstractGameSession", 0);
         }
         public static void Loaded(NetworkMessage msg)
         {

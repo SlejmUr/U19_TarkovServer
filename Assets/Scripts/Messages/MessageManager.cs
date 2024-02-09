@@ -23,13 +23,14 @@ namespace TarkovServerU19.Messages
             {
                 RealErrorCode = RejectConnection.LocationMissmatch
             };
-
+            /*
             var interactables = HTTP_Client.POSTString("/ts/GetLocationInteractables", connectPackage.LocationId);
             var customizables = HTTP_Client.POSTString("/ts/GetAccountCustomiztationIds", connectPackage.ProfileId);
 
             var Interactables_List = JsonConvert.DeserializeObject<Dictionary<string, int>>(interactables);
             var custom_List = JsonConvert.DeserializeObject<string[]>(customizables);
-
+            */
+            /*
             AcceptConnection acceptConnection = new AcceptConnection()
             {
                 antiCheatPort = 0,
@@ -49,7 +50,7 @@ namespace TarkovServerU19.Messages
                 CompressedCustomizationIds = SimpleZlib.CompressToBytes(JsonConvert.SerializeObject(custom_List), 0),
                 CompressedResources = SimpleZlib.CompressToBytes(JsonConvert.SerializeObject(new ResourceKey[] { }), 0),
                 CompressedWeathers = SimpleZlib.CompressToBytes(JsonConvert.SerializeObject(new WeatherClass[] { WeatherClass.CreateDefault() }), 0),
-            };
+            };*/
             msg.conn.Send(148, rejectConnection);
         }
 

@@ -9,7 +9,7 @@
         RejectResponse = 148,
         BEPacket = 168,
         PartialCommand = 185,
-        NightMare = 188,
+        NewPlayerJoin = 188,
         SyncToPlayers = 189,
 
         WorldSpwan = 151,
