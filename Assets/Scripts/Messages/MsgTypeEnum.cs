@@ -6,7 +6,7 @@
         ClientAddPlayerFailedMessage = 45,
 
         ConnectionRequest = 147,
-        OnRejectResponse = 148,
+        RejectResponse = 148,
         BEPacket = 168,
         PartialCommand = 185,
         NightMare = 188,
@@ -24,7 +24,6 @@
         PlayerSpawn = 155,
         ObserverSpawn = 157,
 
-
         messageFromServer = 170,
         SpawnObservedPlayer = 171,
         SpawnObservedPlayers = 172,
@@ -33,6 +32,8 @@
         CommandsObservedPlayers = 174,
         SnapshotBTRVehicles = 184,
 
-        HLAPI = 18385
+        HLAPI = 18385,
+
+        ProgressReport = 190
     }
 }
